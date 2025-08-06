@@ -3,10 +3,10 @@
 
 # 1. BlockAssist repo klonla
 git clone https://github.com/gensyn-ai/blockassist.git
-cd blockassist || exit 1
+cd blockassist
 
 # 2. setup.sh çalıştır
-./setup.sh || exit 1
+./setup.sh
 
 # 3. pyenv kurulum
 curl -fsSL https://pyenv.run | bash
