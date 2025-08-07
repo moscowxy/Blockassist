@@ -12,6 +12,13 @@ echo "[2/8] Setup scripti çalıştırılıyor..."
 echo "[3/8] Pyenv kuruluyor..."
 curl -fsSL https://pyenv.run | bash
 
+echo " kalıcı hale getiriliyor..."
+echo -e '\nexport PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo -e '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo -e 'eval "$(pyenv init - bash)"' >> ~/.bashrc
+echo -e 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+source ~/.bashrc
+
 echo "[4/8] Python bağımlılıkları yükleniyor..."
 sudo apt update
 sudo apt install -y make build-essential libssl-dev zlib1g-dev \
@@ -30,6 +37,18 @@ pyenv global 3.10
 echo "[6/8] Psutil ve Readchar kuruluyor..."
 pip install --upgrade pip
 pip install psutil readchar
+cd ..
+cd ~/Downloads
+wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
+sudo dpkg -i cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
+sudo cp /var/cudnn-local-repo-ubuntu2204-9.11.0/cudnn-local-4EC753EA-keyring.gpg /usr/share/keyrings/
+echo "deb [signed-by=/usr/share/keyrings/cudnn-local-4EC753EA-keyring.gpg] file:///var/cudnn-local-repo-ubuntu2204-9.11.0 /" | sudo tee /etc/apt/sources.list.d/cudnn-local.list
+sudo apt update
+sudo apt install libcudnn9 libcudnn9-dev
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+source ~/.bashrc
+cd ..
+cd blockassist
 
 echo "[7/8] BlockAssist başlatılıyor..."
 python run.py
