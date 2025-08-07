@@ -22,6 +22,8 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+source ~/.bashrc
+
 
 echo "[5/8] pip, psutil ve readchar kuruluyor..."
 pip install --upgrade pip
