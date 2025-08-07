@@ -4,7 +4,7 @@
 
 echo "[1/8] BlockAssist deposu klonlanıyor..."
 git clone https://github.com/gensyn-ai/blockassist.git
-cd blockassist
+ cd blockassist
 
 echo "[2/8] Setup scripti çalıştırılıyor..."
 ./setup.sh
