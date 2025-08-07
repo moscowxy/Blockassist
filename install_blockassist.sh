@@ -23,6 +23,8 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 source ~/.bashrc
+pyenv global 3.10.14
+
 
 
 echo "[5/8] pip, psutil ve readchar kuruluyor..."
