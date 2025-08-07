@@ -11,6 +11,7 @@ sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev librea
   libffi-dev liblzma-dev
 
 echo "1) pyenv kurulumu ve ortam ayarları"
+rm -rf ~/.pyenv
 curl -fsSL https://pyenv.run | bash
 
 export PYENV_ROOT="$HOME/.pyenv"
