@@ -27,8 +27,6 @@ pip install psutil readchar
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-cd ..
-cd ~/Downloads
 wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
 sudo dpkg -i cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
 sudo cp /var/cudnn-local-repo-ubuntu2204-9.11.0/cudnn-local-4EC753EA-keyring.gpg /usr/share/keyrings/
@@ -37,8 +35,12 @@ sudo apt update
 sudo apt install libcudnn9 libcudnn9-dev
 echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
 source ~/.bashrc
-cd ..
-cd blockassist
 
 echo "[7/8] BlockAssist başlatılıyor..."
+sudo apt update
+sudo apt install python3.12-venv -y
+python3 -m venv venv
+source venv/bin/activate
+pip install readchar
+pip install psutil
 python run.py
