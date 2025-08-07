@@ -25,8 +25,6 @@ eval "$(pyenv virtualenv-init -)"
 source ~/.bashrc
 pyenv global 3.10.14
 
-
-
 echo "[5/8] pip, psutil ve readchar kuruluyor..."
 pip install --upgrade pip
 pip install psutil readchar
