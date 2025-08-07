@@ -9,12 +9,6 @@ chmod +x ./setup.sh
 echo "[3/8] pyenv kuruluyor..."
 curl -fsSL https://pyenv.run | bash
 
-# pyenv ortam değişkenlerini yükle
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
 echo "[4/8] Python 3.10 kuruluyor..."
 sudo apt update
 sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
@@ -23,6 +17,11 @@ sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev librea
 
 pyenv install 3.10.14
 pyenv global 3.10.14
+# Geçerli terminal için de aktif et
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 echo "[5/8] pip, psutil ve readchar kuruluyor..."
 pip install --upgrade pip
