@@ -32,11 +32,8 @@ sudo apt install libcudnn9 libcudnn9-dev
 echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
 source ~/.bashrc
 
-echo "[7/8] BlockAssist başlatılıyor..."
+echo "[6/8] Pyhton başlatılıyor..."
 sudo apt update
 sudo apt install python3.12-venv -y
-python3 -m venv venv
-source venv/bin/activate
 pip install readchar
 pip install psutil
-python run.py
