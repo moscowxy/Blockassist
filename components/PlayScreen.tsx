@@ -92,9 +92,6 @@ export function PlayScreen({ initialBet, onBack }: { initialBet?: number; onBack
         functionName: 'startGame',
         args: [betAmountUSD],
         value: ethValue,
-        gas: 100000n, // Fixed gas limit
-        maxFeePerGas: parseGwei('0.001'), // Very low fee
-        maxPriorityFeePerGas: parseGwei('0.0001'), // Very low tip
       })
       
       console.log('Transaction sent, hash:', result)
