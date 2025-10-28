@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { PlayScreen } from './PlayScreen'
-import { ContractGameScreen } from './ContractGameScreen'
 import { DemoGameScreen } from './DemoGameScreen'
 import { useAccount } from 'wagmi'
 
