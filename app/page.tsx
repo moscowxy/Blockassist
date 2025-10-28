@@ -1,9 +1,11 @@
 'use client'
 
-import BlackjackScreen from '@/components/BlackjackScreen'
-import { TokenScreen } from '@/components/TokenScreen'
-import { WalletButton } from '@/components/WalletButton'
+import dynamic from 'next/dynamic'
 import { useState } from 'react'
+
+const WalletButton = dynamic(() => import('@/components/WalletButton').then(mod => ({ default: mod.WalletButton })), { ssr: false })
+const BlackjackScreen = dynamic(() => import('@/components/BlackjackScreen'), { ssr: false })
+const TokenScreen = dynamic(() => import('@/components/TokenScreen').then(mod => ({ default: mod.TokenScreen })), { ssr: false })
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'play' | 'token'>('play')
