@@ -1,0 +1,14 @@
+{
+  "name": "Base Blackjack",
+  "short_name": "Blackjack",
+  "description": "Play blackjack on Base chain - Mobile optimized",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f5132",
+  "theme_color": "#0f5132",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "categories": ["games", "entertainment"]
+}
+

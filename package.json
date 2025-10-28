@@ -2,18 +2,38 @@
   "name": "blockassist",
   "version": "1.0.0",
   "private": true,
-  "description": "Base Blackjack dApp smart contract and tooling",
+  "description": "Base Blackjack dApp with smart contract and frontend",
   "scripts": {
-    "build": "hardhat compile",
+    "dev": "next dev",
+    "build": "hardhat compile && next build",
+    "build:contract": "hardhat compile",
+    "build:frontend": "next build",
+    "start": "next start",
     "lint": "prettier --check \"**/*.{js,ts,json,sol}\"",
     "format": "prettier --write \"**/*.{js,ts,json,sol}\""
+  },
+  "dependencies": {
+    "next": "^14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "viem": "^2.9.0",
+    "wagmi": "^2.7.0",
+    "@tanstack/react-query": "^5.17.0",
+    "framer-motion": "^11.0.0",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.323.0"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@types/node": "^20.12.7",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.17",
     "dotenv": "^16.4.5",
     "hardhat": "^2.22.2",
+    "postcss": "^8.4.33",
     "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
   }

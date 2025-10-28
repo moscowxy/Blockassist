@@ -56,7 +56,8 @@ contract BaseBlackjack is Ownable, ReentrancyGuard, VRFConsumerBaseV2Plus {
     uint256 public lastPlatformFee;
 
     // Economic parameters
-    uint256 public constant GAME_COST_USD = 1e18; // $1 with 18 decimals
+    uint256 public constant MIN_BET_USD = 1e18; // $1 with 18 decimals
+    uint256 public constant MAX_BET_USD = 10 * 1e18; // $10 with 18 decimals
     uint256 public constant PLATFORM_FEE_PERCENT = 5;
     uint256 public constant REWARD_POOL_PERCENT = 95;
     uint256 public constant WEEK_DURATION = 7 days;
@@ -123,12 +124,15 @@ contract BaseBlackjack is Ownable, ReentrancyGuard, VRFConsumerBaseV2Plus {
 
     // ===================== External game flow =====================
 
-    function startGame() external payable nonReentrant returns (uint256 gameId) {
+    function startGame(uint256 betAmountUSD) external payable nonReentrant returns (uint256 gameId) {
         require(!weekFinalized, "Week finalized");
         require(block.timestamp < weekStartTime + WEEK_DURATION, "Week needs finalize");
+        
+        // Validate bet amount: $1, $5, or $10
+        require(betAmountUSD == MIN_BET_USD || betAmountUSD == 5 * 1e18 || betAmountUSD == MAX_BET_USD, "Invalid bet amount");
 
-        uint256 requiredETH = getRequiredETHAmount();
-        require(msg.value >= requiredETH, "Insufficient payment: need $1 worth of ETH");
+        uint256 requiredETH = getRequiredETHAmount(betAmountUSD);
+        require(msg.value >= requiredETH, "Insufficient payment");
 
         _syncUserWeek(msg.sender);
 
@@ -139,7 +143,7 @@ contract BaseBlackjack is Ownable, ReentrancyGuard, VRFConsumerBaseV2Plus {
         gameId = ++nextGameId;
         Game storage game = _games[gameId];
         game.player = msg.sender;
-        game.betAmount = requiredETH;
+        game.betAmount = betAmountUSD; // Store USD bet amount for win shares calculation
         game.state = GameState.WAITING_FOR_RANDOMNESS;
         game.startedAt = block.timestamp;
 
@@ -430,8 +434,10 @@ contract BaseBlackjack is Ownable, ReentrancyGuard, VRFConsumerBaseV2Plus {
         game.finishedAt = block.timestamp;
 
         if (playerWon) {
-            _incrementUserWin(game.player);
-            totalWeeklyWins += 1;
+            // Convert bet amount to win shares ($1 = 1 share, $5 = 5 shares, $10 = 10 shares)
+            uint256 winShares = game.betAmount / 1e18;
+            _incrementUserWin(game.player, winShares);
+            totalWeeklyWins += winShares;
             totalGamesWon[game.player] += 1;
             emit GameWon(gameId, game.player, weeklyWins(game.player));
         } else {
@@ -439,9 +445,9 @@ contract BaseBlackjack is Ownable, ReentrancyGuard, VRFConsumerBaseV2Plus {
         }
     }
 
-    function _incrementUserWin(address user) internal {
+    function _incrementUserWin(address user, uint256 winShares) internal {
         _syncUserWeek(user);
-        _weeklyWins[user] += 1;
+        _weeklyWins[user] += winShares;
     }
 
     function _syncUserWeek(address user) internal {
@@ -464,11 +470,11 @@ contract BaseBlackjack is Ownable, ReentrancyGuard, VRFConsumerBaseV2Plus {
 
     // ===================== Pricing =====================
 
-    function getRequiredETHAmount() public view returns (uint256) {
+    function getRequiredETHAmount(uint256 betAmountUSD) public view returns (uint256) {
         (, int256 price, , , ) = priceFeed.latestRoundData();
         require(price > 0, "Invalid price feed");
 
-        uint256 ethAmount = (GAME_COST_USD * 1e8) / uint256(price);
+        uint256 ethAmount = (betAmountUSD * 1e8) / uint256(price);
         uint256 slippage = ethAmount / 100; // 1%
         return ethAmount + slippage;
     }
