@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import { useAccount, useChainId, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { parseEther, parseGwei } from 'viem'
 import { getContractAddress } from '@/lib/wagmi'
 import { blackjackABI } from '@/lib/contract'
@@ -12,7 +12,7 @@ import { motion } from 'framer-motion'
 type BetAmount = 1 | 5 | 10
 
 export function PlayScreen({ initialBet, onBack }: { initialBet?: number; onBack?: () => void }) {
-  const { isConnected, chainId } = useAccount()
+  const { isConnected, chainId, address: account } = useAccount()
   const contractAddress = chainId ? getContractAddress(chainId) : ''
   
   const [game] = useState(() => new BlackjackGame())
@@ -92,6 +92,8 @@ export function PlayScreen({ initialBet, onBack }: { initialBet?: number; onBack
         functionName: 'startGame',
         args: [betAmountUSD],
         value: ethValue,
+        chainId: chainId!,
+        account: account!,
       })
       
       console.log('Transaction sent, hash:', result)
